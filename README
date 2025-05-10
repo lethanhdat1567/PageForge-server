@@ -1,0 +1,3 @@
+Trạng thái	HTTP Status	Ý nghĩa
+401 Unauthorized	401	Chưa đăng nhập / Token không hợp lệ / Không gửi token
+403 Forbidden	403	Đã đăng nhập nhưng không có quyền truy cập tài nguyên đó
