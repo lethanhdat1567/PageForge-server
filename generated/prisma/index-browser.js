@@ -120,6 +120,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
+  storename: 'storename',
   email: 'email',
   password: 'password',
   avatar: 'avatar',
@@ -136,14 +137,6 @@ exports.Prisma.SessionScalarFieldEnum = {
   expiresAt: 'expiresAt'
 };
 
-exports.Prisma.StoreScalarFieldEnum = {
-  id: 'id',
-  subdomain: 'subdomain',
-  userId: 'userId',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
 exports.Prisma.TemplateScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -157,8 +150,8 @@ exports.Prisma.TemplateScalarFieldEnum = {
 
 exports.Prisma.UserTemplateScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  templateId: 'templateId',
+  user_id: 'user_id',
+  template_id: 'template_id',
   status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -190,6 +183,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   username: 'username',
+  storename: 'storename',
   email: 'email',
   password: 'password',
   avatar: 'avatar',
@@ -199,10 +193,6 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
 
 exports.Prisma.SessionOrderByRelevanceFieldEnum = {
   session: 'session'
-};
-
-exports.Prisma.StoreOrderByRelevanceFieldEnum = {
-  subdomain: 'subdomain'
 };
 
 exports.Prisma.TemplateOrderByRelevanceFieldEnum = {
@@ -237,7 +227,6 @@ exports.Prisma.ContentOrderByRelevanceFieldEnum = {
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
-  Store: 'Store',
   Template: 'Template',
   UserTemplate: 'UserTemplate',
   Content: 'Content'

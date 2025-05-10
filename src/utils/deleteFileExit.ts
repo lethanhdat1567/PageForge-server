@@ -2,11 +2,9 @@ import fs from 'fs';
 import path from 'path';
 
 const deleteFileIfExist = async (fileName: string) => {
-    // Đảm bảo bỏ phần "/" ở đầu filename và lấy đường dẫn tuyệt đối
+    // Đảm bảo đường dẫn sử dụng dấu / và chuẩn hóa lại fileName
     const normalizedPath = fileName.replace(/\\/g, '/').replace(/^\/+/, '');
-    const filePath = path.join(__dirname, '../../', normalizedPath);
-
-    console.log(`Attempting to delete file at: ${filePath}`);
+    const filePath = path.resolve(__dirname, '../../', normalizedPath); // Dùng resolve để có đường dẫn tuyệt đối
 
     try {
         // Kiểm tra sự tồn tại của file
