@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import prisma from '~/prismaClient';
 import deleteFileIfExist from '~/utils/deleteFileExit';
-import { getMultipleFilename, getSingleFilename } from '~/utils/getFilename';
+import { getSingleFilename } from '~/utils/getFilename';
 
 class AccountController {
     // GET /accounts
@@ -20,7 +20,17 @@ class AccountController {
         const { id } = req.params;
         try {
             const user = await prisma.user.findUnique({
-                where: { id: Number(id) }
+                where: { id: Number(id) },
+                select: {
+                    id: true,
+                    storename: true,
+                    username: true,
+                    email: true,
+                    role: true,
+                    avatar: true,
+                    created_at: true,
+                    updated_at: true
+                }
             });
             if (!user) return res.status(404).json({ message: 'User not found' });
             res.json({ data: user });

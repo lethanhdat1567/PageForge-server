@@ -27,6 +27,10 @@ router.put(
     TemplateController.update
 );
 
+router.patch('/:id', TemplateController.updateField);
+
+router.delete('/bulk', TemplateController.bulkDestroy);
+
 router.delete('/:id', TemplateController.destroy);
 
 export default router;

@@ -4,7 +4,7 @@ import { verifySessionToken } from '~/utils/jwt';
 const excludedPath = ['/auth/login', '/auth/login-social', '/auth/register', '/auth/refresh-token', '/auth/logout'];
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
-    if (excludedPath.includes(req.path)) {
+    if (excludedPath.includes(req.path) || req.path.startsWith('/uploads')) {
         next();
         return;
     }

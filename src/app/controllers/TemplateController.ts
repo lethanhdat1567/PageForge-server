@@ -5,9 +5,22 @@ import deleteFileIfExist from '~/utils/deleteFileExit';
 
 class TemplateController {
     // GET /templates
+
     async index(req: Request, res: Response) {
         try {
-            const templates = await prisma.template.findMany();
+            const { status } = req.query;
+
+            const whereClause: any = {};
+
+            // Nếu có status thì filter theo status
+            if (status && status !== 'all') {
+                whereClause.status = status as 'active' | 'inactive';
+            }
+
+            const templates = await prisma.template.findMany({
+                where: whereClause
+            });
+
             res.json({ data: templates });
         } catch (error) {
             console.log(error);
@@ -97,8 +110,36 @@ class TemplateController {
         }
     }
 
-    // DELETE /templates/:id
+    //PATCH /templates/:id
+    async updateField(req: Request, res: Response): Promise<any> {
+        const { id } = req.params;
+        const { name, status } = req.body;
 
+        let updatedData;
+
+        if (name) {
+            console.log(name);
+            updatedData = await prisma.template.update({
+                where: { id: Number(id) },
+                data: {
+                    name
+                }
+            });
+        } else if (status) {
+            updatedData = await prisma.template.update({
+                where: { id: Number(id) },
+                data: {
+                    status
+                }
+            });
+        } else {
+            return res.status(400).json({ message: 'Không tìm thấy name hoặc status' });
+        }
+
+        return res.status(200).json({ message: 'Update successfully!', data: updatedData });
+    }
+
+    // DELETE /templates/:id
     async destroy(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
 
@@ -130,6 +171,43 @@ class TemplateController {
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: 'Failed to delete template' });
+        }
+    }
+
+    // DELETE /templates/bulk
+    async bulkDestroy(req: Request, res: Response): Promise<any> {
+        const { ids } = req.body;
+        console.log(ids);
+
+        if (!Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({ message: 'No IDs provided for deletion' });
+        }
+
+        try {
+            // Lấy thông tin các template để xoá ảnh liên quan
+            const templates = await prisma.template.findMany({
+                where: {
+                    id: { in: ids }
+                }
+            });
+
+            // Xoá file ảnh nếu có
+            templates.forEach((template) => {
+                if (template.main_thumbnail) deleteFileIfExist(template.main_thumbnail);
+                if (template.sub_thumbnail) deleteFileIfExist(template.sub_thumbnail);
+            });
+
+            // Xoá các bản ghi
+            await prisma.template.deleteMany({
+                where: {
+                    id: { in: ids }
+                }
+            });
+
+            res.status(200).json({ message: 'Templates deleted successfully' });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Failed to delete templates' });
         }
     }
 }
