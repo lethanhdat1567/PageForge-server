@@ -143,6 +143,8 @@ exports.Prisma.TemplateScalarFieldEnum = {
   description: 'description',
   main_thumbnail: 'main_thumbnail',
   sub_thumbnail: 'sub_thumbnail',
+  banner: 'banner',
+  price: 'price',
   status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -163,6 +165,17 @@ exports.Prisma.ContentScalarFieldEnum = {
   sectionName: 'sectionName',
   contentJson: 'contentJson',
   status: 'status',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ReviewScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  user_template_id: 'user_template_id',
+  rating: 'rating',
+  content: 'content',
+  parent_id: 'parent_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -200,6 +213,8 @@ exports.Prisma.TemplateOrderByRelevanceFieldEnum = {
   description: 'description',
   main_thumbnail: 'main_thumbnail',
   sub_thumbnail: 'sub_thumbnail',
+  banner: 'banner',
+  price: 'price',
   status: 'status'
 };
 
@@ -223,13 +238,19 @@ exports.Prisma.ContentOrderByRelevanceFieldEnum = {
   status: 'status'
 };
 
+exports.Prisma.ReviewOrderByRelevanceFieldEnum = {
+  rating: 'rating',
+  content: 'content'
+};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Template: 'Template',
   UserTemplate: 'UserTemplate',
-  Content: 'Content'
+  Content: 'Content',
+  Review: 'Review'
 };
 
 /**

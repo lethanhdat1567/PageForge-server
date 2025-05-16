@@ -13,7 +13,8 @@ router.post(
     '/',
     upload.fields([
         { name: 'main_thumbnail', maxCount: 1 },
-        { name: 'sub_thumbnail', maxCount: 1 }
+        { name: 'sub_thumbnail', maxCount: 1 },
+        { name: 'banner', maxCount: 1 }
     ]),
     TemplateController.create
 );
@@ -22,7 +23,8 @@ router.put(
     '/:id',
     upload.fields([
         { name: 'main_thumbnail', maxCount: 1 },
-        { name: 'sub_thumbnail', maxCount: 1 }
+        { name: 'sub_thumbnail', maxCount: 1 },
+        { name: 'banner', maxCount: 1 }
     ]),
     TemplateController.update
 );

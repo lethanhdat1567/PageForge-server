@@ -1,10 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifySessionToken } from '~/utils/jwt';
 
-const excludedPath = ['/auth/login', '/auth/login-social', '/auth/register', '/auth/refresh-token', '/auth/logout'];
-
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
-    if (excludedPath.includes(req.path) || req.path.startsWith('/uploads')) {
+    const publicPaths = [
+        '/auth/login',
+        '/auth/login-social',
+        '/auth/register',
+        '/auth/refresh-token',
+        '/auth/logout',
+        '/template-by-store',
+        '/user-template/template-by-store'
+    ];
+
+    const startsWithPaths = ['/uploads', '/templates', '/reviews'];
+    console.log('PATH:', req.path);
+
+    // Nếu path khớp chính xác hoặc bắt đầu bằng các path công khai
+    if (publicPaths.includes(req.path) || startsWithPaths.some((path) => req.path.startsWith(path))) {
         next();
         return;
     }

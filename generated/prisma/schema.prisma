@@ -22,6 +22,7 @@ model User {
   updated_at DateTime @updatedAt
 
   userTemplates UserTemplate[]
+  reviews       Review[]
 
   @@map("users")
 }
@@ -40,6 +41,8 @@ model Template {
   description    String
   main_thumbnail String?
   sub_thumbnail  String?
+  banner         String?
+  price          String?
   status         String
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
@@ -60,6 +63,7 @@ model UserTemplate {
   user     User      @relation(fields: [user_id], references: [id])
   template Template  @relation(fields: [template_id], references: [id])
   contents Content[]
+  reviews  Review[]
 
   @@unique([user_id, template_id])
   @@map("user_templates")
@@ -77,4 +81,26 @@ model Content {
   userTemplate UserTemplate @relation(fields: [userTemplateId], references: [id])
 
   @@map("content")
+}
+
+model Review {
+  id               Int     @id @default(autoincrement())
+  user_id          Int
+  user_template_id Int
+  rating           String // 'love', 'neutral', 'not_happy'
+  content          String?
+  parent_id        Int? // nullable để có thể là review gốc
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user         User         @relation(fields: [user_id], references: [id])
+  userTemplate UserTemplate @relation(fields: [user_template_id], references: [id])
+  parent       Review?      @relation("ReviewReplies", fields: [parent_id], references: [id])
+  replies      Review[]     @relation("ReviewReplies")
+
+  @@index([user_id])
+  @@index([user_template_id])
+  @@index([parent_id])
+  @@map("reviews")
 }

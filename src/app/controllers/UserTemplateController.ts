@@ -45,6 +45,51 @@ class UserTemplateController {
         }
     }
 
+    async getTemplateByStore(req: Request, res: Response): Promise<any> {
+        try {
+            const storename = req.query.store as string;
+
+            if (!storename) {
+                return res.status(400).json({ data: 'Missing storename' });
+            }
+
+            // 1. Tìm user theo storename
+            const user = await prisma.user.findUnique({
+                where: { storename }
+            });
+
+            if (!user) {
+                return res.status(404).json({ data: 'User not found' });
+            }
+
+            // 2. Tìm template_id trong user_template có status = 'active'
+            const activeUserTemplate = await prisma.userTemplate.findFirst({
+                where: {
+                    user_id: user.id,
+                    status: 'active'
+                }
+            });
+
+            if (!activeUserTemplate) {
+                return res.status(404).json({ data: 'No active template found for this user' });
+            }
+
+            // 3. Lấy tên template từ bảng templates
+            const template = await prisma.template.findUnique({
+                where: { id: activeUserTemplate.template_id }
+            });
+
+            if (!template) {
+                return res.status(404).json({ data: 'Template not found' });
+            }
+
+            return res.status(200).json({ data: { template: template } });
+        } catch (error) {
+            console.error('getTemplateByStore error:', error);
+            return res.status(500).json({ data: 'Internal server error' });
+        }
+    }
+
     // Tạo mới một UserTemplate
     async create(req: Request, res: Response): Promise<any> {
         const { userId, templateId, status } = req.body;
@@ -109,6 +154,50 @@ class UserTemplateController {
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Failed to update user template' });
+        }
+    }
+
+    async updateForUser(req: Request, res: Response): Promise<any> {
+        const { userId, templateId } = req.params;
+
+        try {
+            const existingActive = await prisma.userTemplate.findFirst({
+                where: {
+                    user_id: Number(userId),
+                    status: 'active'
+                }
+            });
+
+            if (existingActive && existingActive.template_id !== Number(templateId)) {
+                await prisma.userTemplate.update({
+                    where: {
+                        user_id_template_id: {
+                            user_id: Number(userId),
+                            template_id: existingActive.template_id
+                        }
+                    },
+                    data: {
+                        status: 'inactive'
+                    }
+                });
+            }
+
+            const updatedTemplate = await prisma.userTemplate.update({
+                where: {
+                    user_id_template_id: {
+                        user_id: Number(userId),
+                        template_id: Number(templateId)
+                    }
+                },
+                data: {
+                    status: 'active'
+                }
+            });
+
+            return res.json({ data: updatedTemplate });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Failed to switch active template' });
         }
     }
 

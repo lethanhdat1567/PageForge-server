@@ -6,25 +6,42 @@ import deleteFileIfExist from '~/utils/deleteFileExit';
 class TemplateController {
     // GET /templates
 
-    async index(req: Request, res: Response) {
+    async index(req: Request, res: Response): Promise<any> {
         try {
-            const { status } = req.query;
+            const { status, sort } = req.query;
 
             const whereClause: any = {};
+            const orderByClause: any = {};
 
-            // Nếu có status thì filter theo status
+            // Lọc theo trạng thái nếu có
             if (status && status !== 'all') {
                 whereClause.status = status as 'active' | 'inactive';
             }
 
+            // Sắp xếp theo yêu cầu
+            switch (sort) {
+                case 'newest':
+                    orderByClause.created_at = 'desc';
+                    break;
+                case 'oldest':
+                    orderByClause.created_at = 'asc';
+                    break;
+                case 'top_rated':
+                    orderByClause.rating = 'desc';
+                    break;
+                default:
+                    orderByClause.created_at = 'desc';
+            }
+
             const templates = await prisma.template.findMany({
-                where: whereClause
+                where: whereClause,
+                orderBy: orderByClause
             });
 
-            res.json({ data: templates });
+            return res.json({ data: templates });
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ message: 'Failed to fetch templates' });
+            console.error('[Template Index Error]', error);
+            return res.status(500).json({ message: 'Failed to fetch templates' });
         }
     }
 
@@ -45,34 +62,42 @@ class TemplateController {
 
     // POST /templates
     async create(req: Request, res: Response) {
-        const { name, description, status } = req.body;
+        const { name, description, status, price } = req.body;
 
         const main_thumbnail = getMultipleFilename(req, 'main_thumbnail');
         const sub_thumbnail = getMultipleFilename(req, 'sub_thumbnail');
+        const banner = getMultipleFilename(req, 'banner');
 
         try {
             const template = await prisma.template.create({
-                data: { name, description, main_thumbnail, sub_thumbnail, status }
+                data: {
+                    name,
+                    description,
+                    status,
+                    price: price === '' ? null : price,
+                    main_thumbnail,
+                    sub_thumbnail,
+                    banner
+                }
             });
             res.status(201).json({ data: template });
         } catch (error) {
             console.log(error);
-            if (main_thumbnail) {
-                deleteFileIfExist(main_thumbnail); // Xóa ảnh main_thumbnail nếu có
-            }
-            if (sub_thumbnail) {
-                deleteFileIfExist(sub_thumbnail); // Xóa ảnh sub_thumbnail nếu có
-            }
+            if (main_thumbnail) deleteFileIfExist(main_thumbnail);
+            if (sub_thumbnail) deleteFileIfExist(sub_thumbnail);
+            if (banner) deleteFileIfExist(banner);
             res.status(500).json({ message: 'Failed to create template' });
         }
     }
 
+    // PUT /templates/:id
     async update(req: Request, res: Response): Promise<any> {
         const { id } = req.params;
-        const { name, description, status } = req.body;
+        const { name, description, status, price } = req.body;
 
         const main_thumbnail = getMultipleFilename(req, 'main_thumbnail');
         const sub_thumbnail = getMultipleFilename(req, 'sub_thumbnail');
+        const banner = getMultipleFilename(req, 'banner');
 
         try {
             const existing = await prisma.template.findUnique({
@@ -83,13 +108,15 @@ class TemplateController {
                 return res.status(404).json({ message: 'Template not found' });
             }
 
-            // Nếu có ảnh mới -> xóa ảnh cũ trong thư mục uploads/images
+            // Xóa ảnh cũ nếu có ảnh mới
             if (main_thumbnail && existing.main_thumbnail) {
                 deleteFileIfExist(existing.main_thumbnail);
             }
-
             if (sub_thumbnail && existing.sub_thumbnail) {
                 deleteFileIfExist(existing.sub_thumbnail);
+            }
+            if (banner && existing.banner) {
+                deleteFileIfExist(existing.banner);
             }
 
             const updated = await prisma.template.update({
@@ -98,8 +125,10 @@ class TemplateController {
                     name,
                     description,
                     status,
+                    price: price === '' ? null : price,
                     main_thumbnail: main_thumbnail || existing.main_thumbnail,
-                    sub_thumbnail: sub_thumbnail || existing.sub_thumbnail
+                    sub_thumbnail: sub_thumbnail || existing.sub_thumbnail,
+                    banner: banner || existing.banner
                 }
             });
 
