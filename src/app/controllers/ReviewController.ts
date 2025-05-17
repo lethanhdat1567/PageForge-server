@@ -2,23 +2,25 @@ import { Request, Response } from 'express';
 import prisma from '~/prismaClient';
 
 class ReviewController {
+    // Lấy danh sách review chính, có kèm replies
     async index(req: Request, res: Response): Promise<any> {
         try {
             const { rating } = req.query;
 
-            const where: any = {};
-            if (rating) where.rating = rating;
+            const where: any = { parent_id: null }; // chỉ lấy review chính
+            if (rating) where.rating = Number(rating);
 
             const reviews = await prisma.review.findMany({
                 where,
                 include: {
                     user: true,
-                    userTemplate: {
+                    template: true,
+                    replies: {
                         include: {
-                            template: true
-                        }
-                    },
-                    replies: true
+                            user: true
+                        },
+                        orderBy: { created_at: 'asc' } // trả replies theo thứ tự thời gian
+                    }
                 },
                 orderBy: { created_at: 'desc' }
             });
@@ -30,6 +32,7 @@ class ReviewController {
         }
     }
 
+    // Lấy review theo id, bao gồm replies
     async show(req: Request, res: Response): Promise<any> {
         try {
             const id = Number(req.params.id);
@@ -38,7 +41,15 @@ class ReviewController {
             }
 
             const review = await prisma.review.findUnique({
-                where: { id }
+                where: { id },
+                include: {
+                    user: true,
+                    template: true,
+                    replies: {
+                        include: { user: true },
+                        orderBy: { created_at: 'asc' }
+                    }
+                }
             });
 
             if (!review) {
@@ -52,6 +63,7 @@ class ReviewController {
         }
     }
 
+    // Lấy review theo template_id, chỉ review chính kèm replies
     async showByTemplateId(req: Request, res: Response): Promise<any> {
         try {
             const templateId = Number(req.params.template_id);
@@ -61,12 +73,15 @@ class ReviewController {
 
             const reviews = await prisma.review.findMany({
                 where: {
-                    userTemplate: {
-                        template_id: templateId
-                    }
+                    template_id: templateId,
+                    parent_id: null // chỉ review chính
                 },
                 include: {
-                    user: true
+                    user: true,
+                    replies: {
+                        include: { user: true },
+                        orderBy: { created_at: 'asc' }
+                    }
                 },
                 orderBy: { created_at: 'desc' }
             });
@@ -78,21 +93,22 @@ class ReviewController {
         }
     }
 
+    // Tạo review mới (review chính hoặc reply)
     async create(req: Request, res: Response): Promise<any> {
         try {
-            const { user_id, user_template_id, rating, content, parent_id } = req.body;
+            const { user_id, template_id, rating, content, parent_id } = req.body;
 
-            if (!user_id || !user_template_id || !rating) {
+            if (!user_id || !template_id || !rating) {
                 return res.status(400).json({ data: null, error: 'Thiếu thông tin bắt buộc' });
             }
 
             const newReview = await prisma.review.create({
                 data: {
                     user_id,
-                    user_template_id,
+                    template_id,
                     rating,
                     content,
-                    parent_id: parent_id ?? null
+                    parent_id: parent_id ?? null // nếu có parent_id là reply, không có là review chính
                 }
             });
 
@@ -103,6 +119,7 @@ class ReviewController {
         }
     }
 
+    // Cập nhật review theo id
     async update(req: Request, res: Response): Promise<any> {
         try {
             const id = Number(req.params.id);
@@ -128,6 +145,7 @@ class ReviewController {
         }
     }
 
+    // Xóa review theo id, bao gồm cả replies con
     async delete(req: Request, res: Response): Promise<any> {
         try {
             const id = Number(req.params.id);
@@ -149,6 +167,7 @@ class ReviewController {
         }
     }
 
+    // Xóa nhiều review cùng lúc, bao gồm replies con
     async bulkDelete(req: Request, res: Response): Promise<any> {
         try {
             const { ids } = req.body;
@@ -166,6 +185,46 @@ class ReviewController {
             return res.json({ data: `Xóa thành công ${ids.length} reviews` });
         } catch (error) {
             console.error('Error bulk delete reviews:', error);
+            return res.status(500).json({ data: null, error: 'Lỗi server' });
+        }
+    }
+
+    // Analysh review
+    async analysh(req: Request, res: Response): Promise<any> {
+        try {
+            const templateId = Number(req.params.template_id);
+            if (isNaN(templateId)) {
+                return res.status(400).json({ error: 'template_id không hợp lệ' });
+            }
+
+            // Đếm số lượng từng loại rating
+            const result = await prisma.review.groupBy({
+                by: ['rating'],
+                where: {
+                    template_id: templateId
+                },
+                _count: {
+                    rating: true
+                }
+            });
+
+            // Chuẩn hóa dữ liệu trả về
+            const data = {
+                good: 0,
+                neutral: 0,
+                bad: 0,
+                total: 0
+            };
+
+            for (const item of result) {
+                const rating = item.rating as 'good' | 'neutral' | 'bad';
+                data[rating] = item._count.rating;
+                data.total += item._count.rating;
+            }
+
+            return res.json({ data });
+        } catch (error) {
+            console.error('Error lấy thống kê reviews:', error);
             return res.status(500).json({ data: null, error: 'Lỗi server' });
         }
     }

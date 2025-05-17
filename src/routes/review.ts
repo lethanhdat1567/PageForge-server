@@ -12,6 +12,9 @@ router.get('/:id', ReviewController.show);
 // Lấy tất cả reviews của 1 template cụ thể
 router.get('/by-template/:template_id', ReviewController.showByTemplateId);
 
+// Thống kê review
+router.get('/analysh/:template_id', ReviewController.analysh);
+
 // Tạo review mới
 router.post('/', ReviewController.create);
 

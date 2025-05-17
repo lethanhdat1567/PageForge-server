@@ -172,7 +172,7 @@ exports.Prisma.ContentScalarFieldEnum = {
 exports.Prisma.ReviewScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
-  user_template_id: 'user_template_id',
+  template_id: 'template_id',
   rating: 'rating',
   content: 'content',
   parent_id: 'parent_id',

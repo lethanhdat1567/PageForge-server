@@ -36,18 +36,19 @@ model Session {
 }
 
 model Template {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
+  id             Int            @id @default(autoincrement())
+  name           String
+  description    String
   main_thumbnail String?
-  sub_thumbnail String?
-  banner String?
-  price String?
-  status String 
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  sub_thumbnail  String?
+  banner         String?
+  price          String?
+  status         String
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
 
-  userTemplates UserTemplate[]
+  userTemplates  UserTemplate[]
+  reviews        Review[]       // thêm: liên kết đến Review
 
   @@map("templates")
 }
@@ -63,7 +64,6 @@ model UserTemplate {
   user     User     @relation(fields: [user_id], references: [id])
   template Template @relation(fields: [template_id], references: [id])
   contents Content[]
-  reviews    Review[]
 
   @@map("user_templates")
   @@unique([user_id, template_id])
@@ -84,23 +84,23 @@ model Content {
 }
 
 model Review {
-  id              Int       @id @default(autoincrement())
-  user_id         Int
-  user_template_id Int
-  rating          String    // 'love', 'neutral', 'not_happy'
-  content         String?
-  parent_id       Int?      // nullable để có thể là review gốc
+  id           Int       @id @default(autoincrement())
+  user_id      Int
+  template_id  Int       // mới: liên kết đến Template
+  rating       String    // 'love', 'neutral', 'not_happy'
+  content      String?
+  parent_id    Int?      // nullable để có thể là review gốc
 
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
 
-  user          User          @relation(fields: [user_id], references: [id])
-  userTemplate  UserTemplate  @relation(fields: [user_template_id], references: [id])
-  parent        Review?       @relation("ReviewReplies", fields: [parent_id], references: [id])
-  replies       Review[]      @relation("ReviewReplies")
+  user         User       @relation(fields: [user_id], references: [id])
+  template     Template   @relation(fields: [template_id], references: [id])
+  parent       Review?    @relation("ReviewReplies", fields: [parent_id], references: [id])
+  replies      Review[]   @relation("ReviewReplies")
 
   @@map("reviews")
   @@index([user_id])
-  @@index([user_template_id])
+  @@index([template_id])
   @@index([parent_id])
 }

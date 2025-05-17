@@ -1317,10 +1317,12 @@ export namespace Prisma {
 
   export type TemplateCountOutputType = {
     userTemplates: number
+    reviews: number
   }
 
   export type TemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userTemplates?: boolean | TemplateCountOutputTypeCountUserTemplatesArgs
+    reviews?: boolean | TemplateCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -1341,6 +1343,13 @@ export namespace Prisma {
     where?: UserTemplateWhereInput
   }
 
+  /**
+   * TemplateCountOutputType without action
+   */
+  export type TemplateCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
+  }
+
 
   /**
    * Count Type UserTemplateCountOutputType
@@ -1348,12 +1357,10 @@ export namespace Prisma {
 
   export type UserTemplateCountOutputType = {
     contents: number
-    reviews: number
   }
 
   export type UserTemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     contents?: boolean | UserTemplateCountOutputTypeCountContentsArgs
-    reviews?: boolean | UserTemplateCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -1372,13 +1379,6 @@ export namespace Prisma {
    */
   export type UserTemplateCountOutputTypeCountContentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContentWhereInput
-  }
-
-  /**
-   * UserTemplateCountOutputType without action
-   */
-  export type UserTemplateCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReviewWhereInput
   }
 
 
@@ -3637,6 +3637,7 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     userTemplates?: boolean | Template$userTemplatesArgs<ExtArgs>
+    reviews?: boolean | Template$reviewsArgs<ExtArgs>
     _count?: boolean | TemplateCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["template"]>
 
@@ -3658,6 +3659,7 @@ export namespace Prisma {
   export type TemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "main_thumbnail" | "sub_thumbnail" | "banner" | "price" | "status" | "created_at" | "updated_at", ExtArgs["result"]["template"]>
   export type TemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userTemplates?: boolean | Template$userTemplatesArgs<ExtArgs>
+    reviews?: boolean | Template$reviewsArgs<ExtArgs>
     _count?: boolean | TemplateCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -3665,6 +3667,7 @@ export namespace Prisma {
     name: "Template"
     objects: {
       userTemplates: Prisma.$UserTemplatePayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4018,6 +4021,7 @@ export namespace Prisma {
   export interface Prisma__TemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     userTemplates<T extends Template$userTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Template$userTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends Template$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Template$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4424,6 +4428,30 @@ export namespace Prisma {
   }
 
   /**
+   * Template.reviews
+   */
+  export type Template$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
    * Template without action
    */
   export type TemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4659,7 +4687,6 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     template?: boolean | TemplateDefaultArgs<ExtArgs>
     contents?: boolean | UserTemplate$contentsArgs<ExtArgs>
-    reviews?: boolean | UserTemplate$reviewsArgs<ExtArgs>
     _count?: boolean | UserTemplateCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userTemplate"]>
 
@@ -4679,7 +4706,6 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     template?: boolean | TemplateDefaultArgs<ExtArgs>
     contents?: boolean | UserTemplate$contentsArgs<ExtArgs>
-    reviews?: boolean | UserTemplate$reviewsArgs<ExtArgs>
     _count?: boolean | UserTemplateCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -4689,7 +4715,6 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       template: Prisma.$TemplatePayload<ExtArgs>
       contents: Prisma.$ContentPayload<ExtArgs>[]
-      reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -5041,7 +5066,6 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     template<T extends TemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TemplateDefaultArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     contents<T extends UserTemplate$contentsArgs<ExtArgs> = {}>(args?: Subset<T, UserTemplate$contentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    reviews<T extends UserTemplate$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, UserTemplate$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5441,30 +5465,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ContentScalarFieldEnum | ContentScalarFieldEnum[]
-  }
-
-  /**
-   * UserTemplate.reviews
-   */
-  export type UserTemplate$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Review
-     */
-    select?: ReviewSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Review
-     */
-    omit?: ReviewOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ReviewInclude<ExtArgs> | null
-    where?: ReviewWhereInput
-    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
-    cursor?: ReviewWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
   }
 
   /**
@@ -6486,21 +6486,21 @@ export namespace Prisma {
   export type ReviewAvgAggregateOutputType = {
     id: number | null
     user_id: number | null
-    user_template_id: number | null
+    template_id: number | null
     parent_id: number | null
   }
 
   export type ReviewSumAggregateOutputType = {
     id: number | null
     user_id: number | null
-    user_template_id: number | null
+    template_id: number | null
     parent_id: number | null
   }
 
   export type ReviewMinAggregateOutputType = {
     id: number | null
     user_id: number | null
-    user_template_id: number | null
+    template_id: number | null
     rating: string | null
     content: string | null
     parent_id: number | null
@@ -6511,7 +6511,7 @@ export namespace Prisma {
   export type ReviewMaxAggregateOutputType = {
     id: number | null
     user_id: number | null
-    user_template_id: number | null
+    template_id: number | null
     rating: string | null
     content: string | null
     parent_id: number | null
@@ -6522,7 +6522,7 @@ export namespace Prisma {
   export type ReviewCountAggregateOutputType = {
     id: number
     user_id: number
-    user_template_id: number
+    template_id: number
     rating: number
     content: number
     parent_id: number
@@ -6535,21 +6535,21 @@ export namespace Prisma {
   export type ReviewAvgAggregateInputType = {
     id?: true
     user_id?: true
-    user_template_id?: true
+    template_id?: true
     parent_id?: true
   }
 
   export type ReviewSumAggregateInputType = {
     id?: true
     user_id?: true
-    user_template_id?: true
+    template_id?: true
     parent_id?: true
   }
 
   export type ReviewMinAggregateInputType = {
     id?: true
     user_id?: true
-    user_template_id?: true
+    template_id?: true
     rating?: true
     content?: true
     parent_id?: true
@@ -6560,7 +6560,7 @@ export namespace Prisma {
   export type ReviewMaxAggregateInputType = {
     id?: true
     user_id?: true
-    user_template_id?: true
+    template_id?: true
     rating?: true
     content?: true
     parent_id?: true
@@ -6571,7 +6571,7 @@ export namespace Prisma {
   export type ReviewCountAggregateInputType = {
     id?: true
     user_id?: true
-    user_template_id?: true
+    template_id?: true
     rating?: true
     content?: true
     parent_id?: true
@@ -6669,7 +6669,7 @@ export namespace Prisma {
   export type ReviewGroupByOutputType = {
     id: number
     user_id: number
-    user_template_id: number
+    template_id: number
     rating: string
     content: string | null
     parent_id: number | null
@@ -6699,14 +6699,14 @@ export namespace Prisma {
   export type ReviewSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     user_id?: boolean
-    user_template_id?: boolean
+    template_id?: boolean
     rating?: boolean
     content?: boolean
     parent_id?: boolean
     created_at?: boolean
     updated_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    userTemplate?: boolean | UserTemplateDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
     parent?: boolean | Review$parentArgs<ExtArgs>
     replies?: boolean | Review$repliesArgs<ExtArgs>
     _count?: boolean | ReviewCountOutputTypeDefaultArgs<ExtArgs>
@@ -6717,7 +6717,7 @@ export namespace Prisma {
   export type ReviewSelectScalar = {
     id?: boolean
     user_id?: boolean
-    user_template_id?: boolean
+    template_id?: boolean
     rating?: boolean
     content?: boolean
     parent_id?: boolean
@@ -6725,10 +6725,10 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "user_template_id" | "rating" | "content" | "parent_id" | "created_at" | "updated_at", ExtArgs["result"]["review"]>
+  export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "template_id" | "rating" | "content" | "parent_id" | "created_at" | "updated_at", ExtArgs["result"]["review"]>
   export type ReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    userTemplate?: boolean | UserTemplateDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
     parent?: boolean | Review$parentArgs<ExtArgs>
     replies?: boolean | Review$repliesArgs<ExtArgs>
     _count?: boolean | ReviewCountOutputTypeDefaultArgs<ExtArgs>
@@ -6738,14 +6738,14 @@ export namespace Prisma {
     name: "Review"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      userTemplate: Prisma.$UserTemplatePayload<ExtArgs>
+      template: Prisma.$TemplatePayload<ExtArgs>
       parent: Prisma.$ReviewPayload<ExtArgs> | null
       replies: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       user_id: number
-      user_template_id: number
+      template_id: number
       rating: string
       content: string | null
       parent_id: number | null
@@ -7092,7 +7092,7 @@ export namespace Prisma {
   export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    userTemplate<T extends UserTemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserTemplateDefaultArgs<ExtArgs>>): Prisma__UserTemplateClient<$Result.GetResult<Prisma.$UserTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    template<T extends TemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TemplateDefaultArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     parent<T extends Review$parentArgs<ExtArgs> = {}>(args?: Subset<T, Review$parentArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     replies<T extends Review$repliesArgs<ExtArgs> = {}>(args?: Subset<T, Review$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -7126,7 +7126,7 @@ export namespace Prisma {
   interface ReviewFieldRefs {
     readonly id: FieldRef<"Review", 'Int'>
     readonly user_id: FieldRef<"Review", 'Int'>
-    readonly user_template_id: FieldRef<"Review", 'Int'>
+    readonly template_id: FieldRef<"Review", 'Int'>
     readonly rating: FieldRef<"Review", 'String'>
     readonly content: FieldRef<"Review", 'String'>
     readonly parent_id: FieldRef<"Review", 'Int'>
@@ -7620,7 +7620,7 @@ export namespace Prisma {
   export const ReviewScalarFieldEnum: {
     id: 'id',
     user_id: 'user_id',
-    user_template_id: 'user_template_id',
+    template_id: 'template_id',
     rating: 'rating',
     content: 'content',
     parent_id: 'parent_id',
@@ -7928,6 +7928,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Template"> | Date | string
     updated_at?: DateTimeFilter<"Template"> | Date | string
     userTemplates?: UserTemplateListRelationFilter
+    reviews?: ReviewListRelationFilter
   }
 
   export type TemplateOrderByWithRelationInput = {
@@ -7942,6 +7943,7 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     userTemplates?: UserTemplateOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
     _relevance?: TemplateOrderByRelevanceInput
   }
 
@@ -7960,6 +7962,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Template"> | Date | string
     updated_at?: DateTimeFilter<"Template"> | Date | string
     userTemplates?: UserTemplateListRelationFilter
+    reviews?: ReviewListRelationFilter
   }, "id">
 
   export type TemplateOrderByWithAggregationInput = {
@@ -8009,7 +8012,6 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     template?: XOR<TemplateScalarRelationFilter, TemplateWhereInput>
     contents?: ContentListRelationFilter
-    reviews?: ReviewListRelationFilter
   }
 
   export type UserTemplateOrderByWithRelationInput = {
@@ -8022,7 +8024,6 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     template?: TemplateOrderByWithRelationInput
     contents?: ContentOrderByRelationAggregateInput
-    reviews?: ReviewOrderByRelationAggregateInput
     _relevance?: UserTemplateOrderByRelevanceInput
   }
 
@@ -8040,7 +8041,6 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     template?: XOR<TemplateScalarRelationFilter, TemplateWhereInput>
     contents?: ContentListRelationFilter
-    reviews?: ReviewListRelationFilter
   }, "id" | "user_id_template_id">
 
   export type UserTemplateOrderByWithAggregationInput = {
@@ -8143,14 +8143,14 @@ export namespace Prisma {
     NOT?: ReviewWhereInput | ReviewWhereInput[]
     id?: IntFilter<"Review"> | number
     user_id?: IntFilter<"Review"> | number
-    user_template_id?: IntFilter<"Review"> | number
+    template_id?: IntFilter<"Review"> | number
     rating?: StringFilter<"Review"> | string
     content?: StringNullableFilter<"Review"> | string | null
     parent_id?: IntNullableFilter<"Review"> | number | null
     created_at?: DateTimeFilter<"Review"> | Date | string
     updated_at?: DateTimeFilter<"Review"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    userTemplate?: XOR<UserTemplateScalarRelationFilter, UserTemplateWhereInput>
+    template?: XOR<TemplateScalarRelationFilter, TemplateWhereInput>
     parent?: XOR<ReviewNullableScalarRelationFilter, ReviewWhereInput> | null
     replies?: ReviewListRelationFilter
   }
@@ -8158,14 +8158,14 @@ export namespace Prisma {
   export type ReviewOrderByWithRelationInput = {
     id?: SortOrder
     user_id?: SortOrder
-    user_template_id?: SortOrder
+    template_id?: SortOrder
     rating?: SortOrder
     content?: SortOrderInput | SortOrder
     parent_id?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     user?: UserOrderByWithRelationInput
-    userTemplate?: UserTemplateOrderByWithRelationInput
+    template?: TemplateOrderByWithRelationInput
     parent?: ReviewOrderByWithRelationInput
     replies?: ReviewOrderByRelationAggregateInput
     _relevance?: ReviewOrderByRelevanceInput
@@ -8177,14 +8177,14 @@ export namespace Prisma {
     OR?: ReviewWhereInput[]
     NOT?: ReviewWhereInput | ReviewWhereInput[]
     user_id?: IntFilter<"Review"> | number
-    user_template_id?: IntFilter<"Review"> | number
+    template_id?: IntFilter<"Review"> | number
     rating?: StringFilter<"Review"> | string
     content?: StringNullableFilter<"Review"> | string | null
     parent_id?: IntNullableFilter<"Review"> | number | null
     created_at?: DateTimeFilter<"Review"> | Date | string
     updated_at?: DateTimeFilter<"Review"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    userTemplate?: XOR<UserTemplateScalarRelationFilter, UserTemplateWhereInput>
+    template?: XOR<TemplateScalarRelationFilter, TemplateWhereInput>
     parent?: XOR<ReviewNullableScalarRelationFilter, ReviewWhereInput> | null
     replies?: ReviewListRelationFilter
   }, "id">
@@ -8192,7 +8192,7 @@ export namespace Prisma {
   export type ReviewOrderByWithAggregationInput = {
     id?: SortOrder
     user_id?: SortOrder
-    user_template_id?: SortOrder
+    template_id?: SortOrder
     rating?: SortOrder
     content?: SortOrderInput | SortOrder
     parent_id?: SortOrderInput | SortOrder
@@ -8211,7 +8211,7 @@ export namespace Prisma {
     NOT?: ReviewScalarWhereWithAggregatesInput | ReviewScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Review"> | number
     user_id?: IntWithAggregatesFilter<"Review"> | number
-    user_template_id?: IntWithAggregatesFilter<"Review"> | number
+    template_id?: IntWithAggregatesFilter<"Review"> | number
     rating?: StringWithAggregatesFilter<"Review"> | string
     content?: StringNullableWithAggregatesFilter<"Review"> | string | null
     parent_id?: IntNullableWithAggregatesFilter<"Review"> | number | null
@@ -8375,6 +8375,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     userTemplates?: UserTemplateCreateNestedManyWithoutTemplateInput
+    reviews?: ReviewCreateNestedManyWithoutTemplateInput
   }
 
   export type TemplateUncheckedCreateInput = {
@@ -8389,6 +8390,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     userTemplates?: UserTemplateUncheckedCreateNestedManyWithoutTemplateInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutTemplateInput
   }
 
   export type TemplateUpdateInput = {
@@ -8402,6 +8404,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     userTemplates?: UserTemplateUpdateManyWithoutTemplateNestedInput
+    reviews?: ReviewUpdateManyWithoutTemplateNestedInput
   }
 
   export type TemplateUncheckedUpdateInput = {
@@ -8416,6 +8419,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     userTemplates?: UserTemplateUncheckedUpdateManyWithoutTemplateNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutTemplateNestedInput
   }
 
   export type TemplateCreateManyInput = {
@@ -8463,7 +8467,6 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutUserTemplatesInput
     template: TemplateCreateNestedOneWithoutUserTemplatesInput
     contents?: ContentCreateNestedManyWithoutUserTemplateInput
-    reviews?: ReviewCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateUncheckedCreateInput = {
@@ -8474,7 +8477,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     contents?: ContentUncheckedCreateNestedManyWithoutUserTemplateInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateUpdateInput = {
@@ -8484,7 +8486,6 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutUserTemplatesNestedInput
     template?: TemplateUpdateOneRequiredWithoutUserTemplatesNestedInput
     contents?: ContentUpdateManyWithoutUserTemplateNestedInput
-    reviews?: ReviewUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserTemplateUncheckedUpdateInput = {
@@ -8495,7 +8496,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     contents?: ContentUncheckedUpdateManyWithoutUserTemplateNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserTemplateCreateManyInput = {
@@ -8594,7 +8594,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutReviewsInput
-    userTemplate: UserTemplateCreateNestedOneWithoutReviewsInput
+    template: TemplateCreateNestedOneWithoutReviewsInput
     parent?: ReviewCreateNestedOneWithoutRepliesInput
     replies?: ReviewCreateNestedManyWithoutParentInput
   }
@@ -8602,7 +8602,7 @@ export namespace Prisma {
   export type ReviewUncheckedCreateInput = {
     id?: number
     user_id: number
-    user_template_id: number
+    template_id: number
     rating: string
     content?: string | null
     parent_id?: number | null
@@ -8617,7 +8617,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutReviewsNestedInput
-    userTemplate?: UserTemplateUpdateOneRequiredWithoutReviewsNestedInput
+    template?: TemplateUpdateOneRequiredWithoutReviewsNestedInput
     parent?: ReviewUpdateOneWithoutRepliesNestedInput
     replies?: ReviewUpdateManyWithoutParentNestedInput
   }
@@ -8625,7 +8625,7 @@ export namespace Prisma {
   export type ReviewUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
-    user_template_id?: IntFieldUpdateOperationsInput | number
+    template_id?: IntFieldUpdateOperationsInput | number
     rating?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     parent_id?: NullableIntFieldUpdateOperationsInput | number | null
@@ -8637,7 +8637,7 @@ export namespace Prisma {
   export type ReviewCreateManyInput = {
     id?: number
     user_id: number
-    user_template_id: number
+    template_id: number
     rating: string
     content?: string | null
     parent_id?: number | null
@@ -8655,7 +8655,7 @@ export namespace Prisma {
   export type ReviewUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
-    user_template_id?: IntFieldUpdateOperationsInput | number
+    template_id?: IntFieldUpdateOperationsInput | number
     rating?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     parent_id?: NullableIntFieldUpdateOperationsInput | number | null
@@ -9142,7 +9142,7 @@ export namespace Prisma {
   export type ReviewCountOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
-    user_template_id?: SortOrder
+    template_id?: SortOrder
     rating?: SortOrder
     content?: SortOrder
     parent_id?: SortOrder
@@ -9153,14 +9153,14 @@ export namespace Prisma {
   export type ReviewAvgOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
-    user_template_id?: SortOrder
+    template_id?: SortOrder
     parent_id?: SortOrder
   }
 
   export type ReviewMaxOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
-    user_template_id?: SortOrder
+    template_id?: SortOrder
     rating?: SortOrder
     content?: SortOrder
     parent_id?: SortOrder
@@ -9171,7 +9171,7 @@ export namespace Prisma {
   export type ReviewMinOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
-    user_template_id?: SortOrder
+    template_id?: SortOrder
     rating?: SortOrder
     content?: SortOrder
     parent_id?: SortOrder
@@ -9182,7 +9182,7 @@ export namespace Prisma {
   export type ReviewSumOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
-    user_template_id?: SortOrder
+    template_id?: SortOrder
     parent_id?: SortOrder
   }
 
@@ -9313,11 +9313,25 @@ export namespace Prisma {
     connect?: UserTemplateWhereUniqueInput | UserTemplateWhereUniqueInput[]
   }
 
+  export type ReviewCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<ReviewCreateWithoutTemplateInput, ReviewUncheckedCreateWithoutTemplateInput> | ReviewCreateWithoutTemplateInput[] | ReviewUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutTemplateInput | ReviewCreateOrConnectWithoutTemplateInput[]
+    createMany?: ReviewCreateManyTemplateInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
   export type UserTemplateUncheckedCreateNestedManyWithoutTemplateInput = {
     create?: XOR<UserTemplateCreateWithoutTemplateInput, UserTemplateUncheckedCreateWithoutTemplateInput> | UserTemplateCreateWithoutTemplateInput[] | UserTemplateUncheckedCreateWithoutTemplateInput[]
     connectOrCreate?: UserTemplateCreateOrConnectWithoutTemplateInput | UserTemplateCreateOrConnectWithoutTemplateInput[]
     createMany?: UserTemplateCreateManyTemplateInputEnvelope
     connect?: UserTemplateWhereUniqueInput | UserTemplateWhereUniqueInput[]
+  }
+
+  export type ReviewUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<ReviewCreateWithoutTemplateInput, ReviewUncheckedCreateWithoutTemplateInput> | ReviewCreateWithoutTemplateInput[] | ReviewUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutTemplateInput | ReviewCreateOrConnectWithoutTemplateInput[]
+    createMany?: ReviewCreateManyTemplateInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
   export type UserTemplateUpdateManyWithoutTemplateNestedInput = {
@@ -9334,6 +9348,20 @@ export namespace Prisma {
     deleteMany?: UserTemplateScalarWhereInput | UserTemplateScalarWhereInput[]
   }
 
+  export type ReviewUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<ReviewCreateWithoutTemplateInput, ReviewUncheckedCreateWithoutTemplateInput> | ReviewCreateWithoutTemplateInput[] | ReviewUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutTemplateInput | ReviewCreateOrConnectWithoutTemplateInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutTemplateInput | ReviewUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: ReviewCreateManyTemplateInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutTemplateInput | ReviewUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutTemplateInput | ReviewUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
   export type UserTemplateUncheckedUpdateManyWithoutTemplateNestedInput = {
     create?: XOR<UserTemplateCreateWithoutTemplateInput, UserTemplateUncheckedCreateWithoutTemplateInput> | UserTemplateCreateWithoutTemplateInput[] | UserTemplateUncheckedCreateWithoutTemplateInput[]
     connectOrCreate?: UserTemplateCreateOrConnectWithoutTemplateInput | UserTemplateCreateOrConnectWithoutTemplateInput[]
@@ -9346,6 +9374,20 @@ export namespace Prisma {
     update?: UserTemplateUpdateWithWhereUniqueWithoutTemplateInput | UserTemplateUpdateWithWhereUniqueWithoutTemplateInput[]
     updateMany?: UserTemplateUpdateManyWithWhereWithoutTemplateInput | UserTemplateUpdateManyWithWhereWithoutTemplateInput[]
     deleteMany?: UserTemplateScalarWhereInput | UserTemplateScalarWhereInput[]
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<ReviewCreateWithoutTemplateInput, ReviewUncheckedCreateWithoutTemplateInput> | ReviewCreateWithoutTemplateInput[] | ReviewUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutTemplateInput | ReviewCreateOrConnectWithoutTemplateInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutTemplateInput | ReviewUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: ReviewCreateManyTemplateInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutTemplateInput | ReviewUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutTemplateInput | ReviewUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutUserTemplatesInput = {
@@ -9367,25 +9409,11 @@ export namespace Prisma {
     connect?: ContentWhereUniqueInput | ContentWhereUniqueInput[]
   }
 
-  export type ReviewCreateNestedManyWithoutUserTemplateInput = {
-    create?: XOR<ReviewCreateWithoutUserTemplateInput, ReviewUncheckedCreateWithoutUserTemplateInput> | ReviewCreateWithoutUserTemplateInput[] | ReviewUncheckedCreateWithoutUserTemplateInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserTemplateInput | ReviewCreateOrConnectWithoutUserTemplateInput[]
-    createMany?: ReviewCreateManyUserTemplateInputEnvelope
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-  }
-
   export type ContentUncheckedCreateNestedManyWithoutUserTemplateInput = {
     create?: XOR<ContentCreateWithoutUserTemplateInput, ContentUncheckedCreateWithoutUserTemplateInput> | ContentCreateWithoutUserTemplateInput[] | ContentUncheckedCreateWithoutUserTemplateInput[]
     connectOrCreate?: ContentCreateOrConnectWithoutUserTemplateInput | ContentCreateOrConnectWithoutUserTemplateInput[]
     createMany?: ContentCreateManyUserTemplateInputEnvelope
     connect?: ContentWhereUniqueInput | ContentWhereUniqueInput[]
-  }
-
-  export type ReviewUncheckedCreateNestedManyWithoutUserTemplateInput = {
-    create?: XOR<ReviewCreateWithoutUserTemplateInput, ReviewUncheckedCreateWithoutUserTemplateInput> | ReviewCreateWithoutUserTemplateInput[] | ReviewUncheckedCreateWithoutUserTemplateInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserTemplateInput | ReviewCreateOrConnectWithoutUserTemplateInput[]
-    createMany?: ReviewCreateManyUserTemplateInputEnvelope
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutUserTemplatesNestedInput = {
@@ -9418,20 +9446,6 @@ export namespace Prisma {
     deleteMany?: ContentScalarWhereInput | ContentScalarWhereInput[]
   }
 
-  export type ReviewUpdateManyWithoutUserTemplateNestedInput = {
-    create?: XOR<ReviewCreateWithoutUserTemplateInput, ReviewUncheckedCreateWithoutUserTemplateInput> | ReviewCreateWithoutUserTemplateInput[] | ReviewUncheckedCreateWithoutUserTemplateInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserTemplateInput | ReviewCreateOrConnectWithoutUserTemplateInput[]
-    upsert?: ReviewUpsertWithWhereUniqueWithoutUserTemplateInput | ReviewUpsertWithWhereUniqueWithoutUserTemplateInput[]
-    createMany?: ReviewCreateManyUserTemplateInputEnvelope
-    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    update?: ReviewUpdateWithWhereUniqueWithoutUserTemplateInput | ReviewUpdateWithWhereUniqueWithoutUserTemplateInput[]
-    updateMany?: ReviewUpdateManyWithWhereWithoutUserTemplateInput | ReviewUpdateManyWithWhereWithoutUserTemplateInput[]
-    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-  }
-
   export type ContentUncheckedUpdateManyWithoutUserTemplateNestedInput = {
     create?: XOR<ContentCreateWithoutUserTemplateInput, ContentUncheckedCreateWithoutUserTemplateInput> | ContentCreateWithoutUserTemplateInput[] | ContentUncheckedCreateWithoutUserTemplateInput[]
     connectOrCreate?: ContentCreateOrConnectWithoutUserTemplateInput | ContentCreateOrConnectWithoutUserTemplateInput[]
@@ -9444,20 +9458,6 @@ export namespace Prisma {
     update?: ContentUpdateWithWhereUniqueWithoutUserTemplateInput | ContentUpdateWithWhereUniqueWithoutUserTemplateInput[]
     updateMany?: ContentUpdateManyWithWhereWithoutUserTemplateInput | ContentUpdateManyWithWhereWithoutUserTemplateInput[]
     deleteMany?: ContentScalarWhereInput | ContentScalarWhereInput[]
-  }
-
-  export type ReviewUncheckedUpdateManyWithoutUserTemplateNestedInput = {
-    create?: XOR<ReviewCreateWithoutUserTemplateInput, ReviewUncheckedCreateWithoutUserTemplateInput> | ReviewCreateWithoutUserTemplateInput[] | ReviewUncheckedCreateWithoutUserTemplateInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserTemplateInput | ReviewCreateOrConnectWithoutUserTemplateInput[]
-    upsert?: ReviewUpsertWithWhereUniqueWithoutUserTemplateInput | ReviewUpsertWithWhereUniqueWithoutUserTemplateInput[]
-    createMany?: ReviewCreateManyUserTemplateInputEnvelope
-    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    update?: ReviewUpdateWithWhereUniqueWithoutUserTemplateInput | ReviewUpdateWithWhereUniqueWithoutUserTemplateInput[]
-    updateMany?: ReviewUpdateManyWithWhereWithoutUserTemplateInput | ReviewUpdateManyWithWhereWithoutUserTemplateInput[]
-    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
   export type UserTemplateCreateNestedOneWithoutContentsInput = {
@@ -9480,10 +9480,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type UserTemplateCreateNestedOneWithoutReviewsInput = {
-    create?: XOR<UserTemplateCreateWithoutReviewsInput, UserTemplateUncheckedCreateWithoutReviewsInput>
-    connectOrCreate?: UserTemplateCreateOrConnectWithoutReviewsInput
-    connect?: UserTemplateWhereUniqueInput
+  export type TemplateCreateNestedOneWithoutReviewsInput = {
+    create?: XOR<TemplateCreateWithoutReviewsInput, TemplateUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: TemplateCreateOrConnectWithoutReviewsInput
+    connect?: TemplateWhereUniqueInput
   }
 
   export type ReviewCreateNestedOneWithoutRepliesInput = {
@@ -9514,12 +9514,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReviewsInput, UserUpdateWithoutReviewsInput>, UserUncheckedUpdateWithoutReviewsInput>
   }
 
-  export type UserTemplateUpdateOneRequiredWithoutReviewsNestedInput = {
-    create?: XOR<UserTemplateCreateWithoutReviewsInput, UserTemplateUncheckedCreateWithoutReviewsInput>
-    connectOrCreate?: UserTemplateCreateOrConnectWithoutReviewsInput
-    upsert?: UserTemplateUpsertWithoutReviewsInput
-    connect?: UserTemplateWhereUniqueInput
-    update?: XOR<XOR<UserTemplateUpdateToOneWithWhereWithoutReviewsInput, UserTemplateUpdateWithoutReviewsInput>, UserTemplateUncheckedUpdateWithoutReviewsInput>
+  export type TemplateUpdateOneRequiredWithoutReviewsNestedInput = {
+    create?: XOR<TemplateCreateWithoutReviewsInput, TemplateUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: TemplateCreateOrConnectWithoutReviewsInput
+    upsert?: TemplateUpsertWithoutReviewsInput
+    connect?: TemplateWhereUniqueInput
+    update?: XOR<XOR<TemplateUpdateToOneWithWhereWithoutReviewsInput, TemplateUpdateWithoutReviewsInput>, TemplateUncheckedUpdateWithoutReviewsInput>
   }
 
   export type ReviewUpdateOneWithoutRepliesNestedInput = {
@@ -9764,7 +9764,6 @@ export namespace Prisma {
     updated_at?: Date | string
     template: TemplateCreateNestedOneWithoutUserTemplatesInput
     contents?: ContentCreateNestedManyWithoutUserTemplateInput
-    reviews?: ReviewCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateUncheckedCreateWithoutUserInput = {
@@ -9774,7 +9773,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     contents?: ContentUncheckedCreateNestedManyWithoutUserTemplateInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateCreateOrConnectWithoutUserInput = {
@@ -9792,14 +9790,14 @@ export namespace Prisma {
     content?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    userTemplate: UserTemplateCreateNestedOneWithoutReviewsInput
+    template: TemplateCreateNestedOneWithoutReviewsInput
     parent?: ReviewCreateNestedOneWithoutRepliesInput
     replies?: ReviewCreateNestedManyWithoutParentInput
   }
 
   export type ReviewUncheckedCreateWithoutUserInput = {
     id?: number
-    user_template_id: number
+    template_id: number
     rating: string
     content?: string | null
     parent_id?: number | null
@@ -9868,7 +9866,7 @@ export namespace Prisma {
     NOT?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
     id?: IntFilter<"Review"> | number
     user_id?: IntFilter<"Review"> | number
-    user_template_id?: IntFilter<"Review"> | number
+    template_id?: IntFilter<"Review"> | number
     rating?: StringFilter<"Review"> | string
     content?: StringNullableFilter<"Review"> | string | null
     parent_id?: IntNullableFilter<"Review"> | number | null
@@ -9882,7 +9880,6 @@ export namespace Prisma {
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutUserTemplatesInput
     contents?: ContentCreateNestedManyWithoutUserTemplateInput
-    reviews?: ReviewCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateUncheckedCreateWithoutTemplateInput = {
@@ -9892,7 +9889,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     contents?: ContentUncheckedCreateNestedManyWithoutUserTemplateInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateCreateOrConnectWithoutTemplateInput = {
@@ -9902,6 +9898,37 @@ export namespace Prisma {
 
   export type UserTemplateCreateManyTemplateInputEnvelope = {
     data: UserTemplateCreateManyTemplateInput | UserTemplateCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReviewCreateWithoutTemplateInput = {
+    rating: string
+    content?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutReviewsInput
+    parent?: ReviewCreateNestedOneWithoutRepliesInput
+    replies?: ReviewCreateNestedManyWithoutParentInput
+  }
+
+  export type ReviewUncheckedCreateWithoutTemplateInput = {
+    id?: number
+    user_id: number
+    rating: string
+    content?: string | null
+    parent_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    replies?: ReviewUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type ReviewCreateOrConnectWithoutTemplateInput = {
+    where: ReviewWhereUniqueInput
+    create: XOR<ReviewCreateWithoutTemplateInput, ReviewUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type ReviewCreateManyTemplateInputEnvelope = {
+    data: ReviewCreateManyTemplateInput | ReviewCreateManyTemplateInput[]
     skipDuplicates?: boolean
   }
 
@@ -9919,6 +9946,22 @@ export namespace Prisma {
   export type UserTemplateUpdateManyWithWhereWithoutTemplateInput = {
     where: UserTemplateScalarWhereInput
     data: XOR<UserTemplateUpdateManyMutationInput, UserTemplateUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type ReviewUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutTemplateInput, ReviewUncheckedUpdateWithoutTemplateInput>
+    create: XOR<ReviewCreateWithoutTemplateInput, ReviewUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type ReviewUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutTemplateInput, ReviewUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type ReviewUpdateManyWithWhereWithoutTemplateInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutTemplateInput>
   }
 
   export type UserCreateWithoutUserTemplatesInput = {
@@ -9965,6 +10008,7 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    reviews?: ReviewCreateNestedManyWithoutTemplateInput
   }
 
   export type TemplateUncheckedCreateWithoutUserTemplatesInput = {
@@ -9978,6 +10022,7 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
+    reviews?: ReviewUncheckedCreateNestedManyWithoutTemplateInput
   }
 
   export type TemplateCreateOrConnectWithoutUserTemplatesInput = {
@@ -10009,37 +10054,6 @@ export namespace Prisma {
 
   export type ContentCreateManyUserTemplateInputEnvelope = {
     data: ContentCreateManyUserTemplateInput | ContentCreateManyUserTemplateInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ReviewCreateWithoutUserTemplateInput = {
-    rating: string
-    content?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    user: UserCreateNestedOneWithoutReviewsInput
-    parent?: ReviewCreateNestedOneWithoutRepliesInput
-    replies?: ReviewCreateNestedManyWithoutParentInput
-  }
-
-  export type ReviewUncheckedCreateWithoutUserTemplateInput = {
-    id?: number
-    user_id: number
-    rating: string
-    content?: string | null
-    parent_id?: number | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    replies?: ReviewUncheckedCreateNestedManyWithoutParentInput
-  }
-
-  export type ReviewCreateOrConnectWithoutUserTemplateInput = {
-    where: ReviewWhereUniqueInput
-    create: XOR<ReviewCreateWithoutUserTemplateInput, ReviewUncheckedCreateWithoutUserTemplateInput>
-  }
-
-  export type ReviewCreateManyUserTemplateInputEnvelope = {
-    data: ReviewCreateManyUserTemplateInput | ReviewCreateManyUserTemplateInput[]
     skipDuplicates?: boolean
   }
 
@@ -10104,6 +10118,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: ReviewUpdateManyWithoutTemplateNestedInput
   }
 
   export type TemplateUncheckedUpdateWithoutUserTemplatesInput = {
@@ -10117,6 +10132,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: ReviewUncheckedUpdateManyWithoutTemplateNestedInput
   }
 
   export type ContentUpsertWithWhereUniqueWithoutUserTemplateInput = {
@@ -10148,29 +10164,12 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"Content"> | Date | string
   }
 
-  export type ReviewUpsertWithWhereUniqueWithoutUserTemplateInput = {
-    where: ReviewWhereUniqueInput
-    update: XOR<ReviewUpdateWithoutUserTemplateInput, ReviewUncheckedUpdateWithoutUserTemplateInput>
-    create: XOR<ReviewCreateWithoutUserTemplateInput, ReviewUncheckedCreateWithoutUserTemplateInput>
-  }
-
-  export type ReviewUpdateWithWhereUniqueWithoutUserTemplateInput = {
-    where: ReviewWhereUniqueInput
-    data: XOR<ReviewUpdateWithoutUserTemplateInput, ReviewUncheckedUpdateWithoutUserTemplateInput>
-  }
-
-  export type ReviewUpdateManyWithWhereWithoutUserTemplateInput = {
-    where: ReviewScalarWhereInput
-    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutUserTemplateInput>
-  }
-
   export type UserTemplateCreateWithoutContentsInput = {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutUserTemplatesInput
     template: TemplateCreateNestedOneWithoutUserTemplatesInput
-    reviews?: ReviewCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateUncheckedCreateWithoutContentsInput = {
@@ -10180,7 +10179,6 @@ export namespace Prisma {
     status: string
     created_at?: Date | string
     updated_at?: Date | string
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserTemplateInput
   }
 
   export type UserTemplateCreateOrConnectWithoutContentsInput = {
@@ -10205,7 +10203,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutUserTemplatesNestedInput
     template?: TemplateUpdateOneRequiredWithoutUserTemplatesNestedInput
-    reviews?: ReviewUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserTemplateUncheckedUpdateWithoutContentsInput = {
@@ -10215,7 +10212,6 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    reviews?: ReviewUncheckedUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserCreateWithoutReviewsInput = {
@@ -10252,28 +10248,36 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutReviewsInput, UserUncheckedCreateWithoutReviewsInput>
   }
 
-  export type UserTemplateCreateWithoutReviewsInput = {
+  export type TemplateCreateWithoutReviewsInput = {
+    name: string
+    description: string
+    main_thumbnail?: string | null
+    sub_thumbnail?: string | null
+    banner?: string | null
+    price?: string | null
     status: string
     created_at?: Date | string
     updated_at?: Date | string
-    user: UserCreateNestedOneWithoutUserTemplatesInput
-    template: TemplateCreateNestedOneWithoutUserTemplatesInput
-    contents?: ContentCreateNestedManyWithoutUserTemplateInput
+    userTemplates?: UserTemplateCreateNestedManyWithoutTemplateInput
   }
 
-  export type UserTemplateUncheckedCreateWithoutReviewsInput = {
+  export type TemplateUncheckedCreateWithoutReviewsInput = {
     id?: number
-    user_id: number
-    template_id: number
+    name: string
+    description: string
+    main_thumbnail?: string | null
+    sub_thumbnail?: string | null
+    banner?: string | null
+    price?: string | null
     status: string
     created_at?: Date | string
     updated_at?: Date | string
-    contents?: ContentUncheckedCreateNestedManyWithoutUserTemplateInput
+    userTemplates?: UserTemplateUncheckedCreateNestedManyWithoutTemplateInput
   }
 
-  export type UserTemplateCreateOrConnectWithoutReviewsInput = {
-    where: UserTemplateWhereUniqueInput
-    create: XOR<UserTemplateCreateWithoutReviewsInput, UserTemplateUncheckedCreateWithoutReviewsInput>
+  export type TemplateCreateOrConnectWithoutReviewsInput = {
+    where: TemplateWhereUniqueInput
+    create: XOR<TemplateCreateWithoutReviewsInput, TemplateUncheckedCreateWithoutReviewsInput>
   }
 
   export type ReviewCreateWithoutRepliesInput = {
@@ -10282,14 +10286,14 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutReviewsInput
-    userTemplate: UserTemplateCreateNestedOneWithoutReviewsInput
+    template: TemplateCreateNestedOneWithoutReviewsInput
     parent?: ReviewCreateNestedOneWithoutRepliesInput
   }
 
   export type ReviewUncheckedCreateWithoutRepliesInput = {
     id?: number
     user_id: number
-    user_template_id: number
+    template_id: number
     rating: string
     content?: string | null
     parent_id?: number | null
@@ -10308,14 +10312,14 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutReviewsInput
-    userTemplate: UserTemplateCreateNestedOneWithoutReviewsInput
+    template: TemplateCreateNestedOneWithoutReviewsInput
     replies?: ReviewCreateNestedManyWithoutParentInput
   }
 
   export type ReviewUncheckedCreateWithoutParentInput = {
     id?: number
     user_id: number
-    user_template_id: number
+    template_id: number
     rating: string
     content?: string | null
     created_at?: Date | string
@@ -10373,34 +10377,42 @@ export namespace Prisma {
     userTemplates?: UserTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserTemplateUpsertWithoutReviewsInput = {
-    update: XOR<UserTemplateUpdateWithoutReviewsInput, UserTemplateUncheckedUpdateWithoutReviewsInput>
-    create: XOR<UserTemplateCreateWithoutReviewsInput, UserTemplateUncheckedCreateWithoutReviewsInput>
-    where?: UserTemplateWhereInput
+  export type TemplateUpsertWithoutReviewsInput = {
+    update: XOR<TemplateUpdateWithoutReviewsInput, TemplateUncheckedUpdateWithoutReviewsInput>
+    create: XOR<TemplateCreateWithoutReviewsInput, TemplateUncheckedCreateWithoutReviewsInput>
+    where?: TemplateWhereInput
   }
 
-  export type UserTemplateUpdateToOneWithWhereWithoutReviewsInput = {
-    where?: UserTemplateWhereInput
-    data: XOR<UserTemplateUpdateWithoutReviewsInput, UserTemplateUncheckedUpdateWithoutReviewsInput>
+  export type TemplateUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: TemplateWhereInput
+    data: XOR<TemplateUpdateWithoutReviewsInput, TemplateUncheckedUpdateWithoutReviewsInput>
   }
 
-  export type UserTemplateUpdateWithoutReviewsInput = {
+  export type TemplateUpdateWithoutReviewsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    main_thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    sub_thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserTemplatesNestedInput
-    template?: TemplateUpdateOneRequiredWithoutUserTemplatesNestedInput
-    contents?: ContentUpdateManyWithoutUserTemplateNestedInput
+    userTemplates?: UserTemplateUpdateManyWithoutTemplateNestedInput
   }
 
-  export type UserTemplateUncheckedUpdateWithoutReviewsInput = {
+  export type TemplateUncheckedUpdateWithoutReviewsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    user_id?: IntFieldUpdateOperationsInput | number
-    template_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    main_thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    sub_thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    banner?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    contents?: ContentUncheckedUpdateManyWithoutUserTemplateNestedInput
+    userTemplates?: UserTemplateUncheckedUpdateManyWithoutTemplateNestedInput
   }
 
   export type ReviewUpsertWithoutRepliesInput = {
@@ -10420,14 +10432,14 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutReviewsNestedInput
-    userTemplate?: UserTemplateUpdateOneRequiredWithoutReviewsNestedInput
+    template?: TemplateUpdateOneRequiredWithoutReviewsNestedInput
     parent?: ReviewUpdateOneWithoutRepliesNestedInput
   }
 
   export type ReviewUncheckedUpdateWithoutRepliesInput = {
     id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
-    user_template_id?: IntFieldUpdateOperationsInput | number
+    template_id?: IntFieldUpdateOperationsInput | number
     rating?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     parent_id?: NullableIntFieldUpdateOperationsInput | number | null
@@ -10461,7 +10473,7 @@ export namespace Prisma {
 
   export type ReviewCreateManyUserInput = {
     id?: number
-    user_template_id: number
+    template_id: number
     rating: string
     content?: string | null
     parent_id?: number | null
@@ -10475,7 +10487,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     template?: TemplateUpdateOneRequiredWithoutUserTemplatesNestedInput
     contents?: ContentUpdateManyWithoutUserTemplateNestedInput
-    reviews?: ReviewUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserTemplateUncheckedUpdateWithoutUserInput = {
@@ -10485,7 +10496,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     contents?: ContentUncheckedUpdateManyWithoutUserTemplateNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserTemplateUncheckedUpdateManyWithoutUserInput = {
@@ -10501,14 +10511,14 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    userTemplate?: UserTemplateUpdateOneRequiredWithoutReviewsNestedInput
+    template?: TemplateUpdateOneRequiredWithoutReviewsNestedInput
     parent?: ReviewUpdateOneWithoutRepliesNestedInput
     replies?: ReviewUpdateManyWithoutParentNestedInput
   }
 
   export type ReviewUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    user_template_id?: IntFieldUpdateOperationsInput | number
+    template_id?: IntFieldUpdateOperationsInput | number
     rating?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     parent_id?: NullableIntFieldUpdateOperationsInput | number | null
@@ -10519,7 +10529,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    user_template_id?: IntFieldUpdateOperationsInput | number
+    template_id?: IntFieldUpdateOperationsInput | number
     rating?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     parent_id?: NullableIntFieldUpdateOperationsInput | number | null
@@ -10535,13 +10545,22 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
+  export type ReviewCreateManyTemplateInput = {
+    id?: number
+    user_id: number
+    rating: string
+    content?: string | null
+    parent_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
   export type UserTemplateUpdateWithoutTemplateInput = {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutUserTemplatesNestedInput
     contents?: ContentUpdateManyWithoutUserTemplateNestedInput
-    reviews?: ReviewUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserTemplateUncheckedUpdateWithoutTemplateInput = {
@@ -10551,7 +10570,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     contents?: ContentUncheckedUpdateManyWithoutUserTemplateNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserTemplateNestedInput
   }
 
   export type UserTemplateUncheckedUpdateManyWithoutTemplateInput = {
@@ -10562,21 +10580,42 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReviewUpdateWithoutTemplateInput = {
+    rating?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutReviewsNestedInput
+    parent?: ReviewUpdateOneWithoutRepliesNestedInput
+    replies?: ReviewUpdateManyWithoutParentNestedInput
+  }
+
+  export type ReviewUncheckedUpdateWithoutTemplateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    rating?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    parent_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: ReviewUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutTemplateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    rating?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    parent_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ContentCreateManyUserTemplateInput = {
     id?: number
     sectionName: string
     contentJson: JsonNullValueInput | InputJsonValue
     status: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type ReviewCreateManyUserTemplateInput = {
-    id?: number
-    user_id: number
-    rating: string
-    content?: string | null
-    parent_id?: number | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -10607,41 +10646,10 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ReviewUpdateWithoutUserTemplateInput = {
-    rating?: StringFieldUpdateOperationsInput | string
-    content?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutReviewsNestedInput
-    parent?: ReviewUpdateOneWithoutRepliesNestedInput
-    replies?: ReviewUpdateManyWithoutParentNestedInput
-  }
-
-  export type ReviewUncheckedUpdateWithoutUserTemplateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    user_id?: IntFieldUpdateOperationsInput | number
-    rating?: StringFieldUpdateOperationsInput | string
-    content?: NullableStringFieldUpdateOperationsInput | string | null
-    parent_id?: NullableIntFieldUpdateOperationsInput | number | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    replies?: ReviewUncheckedUpdateManyWithoutParentNestedInput
-  }
-
-  export type ReviewUncheckedUpdateManyWithoutUserTemplateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    user_id?: IntFieldUpdateOperationsInput | number
-    rating?: StringFieldUpdateOperationsInput | string
-    content?: NullableStringFieldUpdateOperationsInput | string | null
-    parent_id?: NullableIntFieldUpdateOperationsInput | number | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type ReviewCreateManyParentInput = {
     id?: number
     user_id: number
-    user_template_id: number
+    template_id: number
     rating: string
     content?: string | null
     created_at?: Date | string
@@ -10654,14 +10662,14 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutReviewsNestedInput
-    userTemplate?: UserTemplateUpdateOneRequiredWithoutReviewsNestedInput
+    template?: TemplateUpdateOneRequiredWithoutReviewsNestedInput
     replies?: ReviewUpdateManyWithoutParentNestedInput
   }
 
   export type ReviewUncheckedUpdateWithoutParentInput = {
     id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
-    user_template_id?: IntFieldUpdateOperationsInput | number
+    template_id?: IntFieldUpdateOperationsInput | number
     rating?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10672,7 +10680,7 @@ export namespace Prisma {
   export type ReviewUncheckedUpdateManyWithoutParentInput = {
     id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
-    user_template_id?: IntFieldUpdateOperationsInput | number
+    template_id?: IntFieldUpdateOperationsInput | number
     rating?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
